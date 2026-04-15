@@ -37,7 +37,7 @@ function App() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col transition-colors">
+    <div className="min-h-screen bg-surface-alt dark:bg-dark-surface flex flex-col transition-colors">
       <Header
         theme={theme}
         onToggleTheme={toggleTheme}

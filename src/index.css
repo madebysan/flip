@@ -3,21 +3,48 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-accent: #6366f1;
-  --color-accent-light: #818cf8;
-  --color-accent-dark: #4f46e5;
-  --color-accent-bg: rgba(99, 102, 241, 0.08);
-  --color-accent-border: rgba(99, 102, 241, 0.3);
-  --color-known: #22c55e;
-  --color-known-bg: rgba(34, 197, 94, 0.1);
-  --color-review: #f59e0b;
-  --color-review-bg: rgba(245, 158, 11, 0.1);
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* ElevenLabs-inspired palette */
+  --color-surface: #ffffff;
+  --color-surface-alt: #f5f5f5;
+  --color-warm-stone: rgba(245, 242, 239, 0.8);
+  --color-warm-stone-solid: #f5f2ef;
+  --color-text-primary: #000000;
+  --color-text-secondary: #4e4e4e;
+  --color-text-muted: #777169;
+  --color-border: #e5e5e5;
+  --color-border-subtle: rgba(0, 0, 0, 0.05);
+
+  /* Functional colors */
+  --color-known: #2d8a56;
+  --color-known-bg: rgba(45, 138, 86, 0.08);
+  --color-review: #b8860b;
+  --color-review-bg: rgba(184, 134, 11, 0.06);
+
+  /* Dark mode surfaces */
+  --color-dark-surface: #111111;
+  --color-dark-surface-alt: #1a1a1a;
+  --color-dark-card: #161616;
+  --color-dark-border: rgba(255, 255, 255, 0.08);
+  --color-dark-text: #e5e5e5;
+  --color-dark-text-secondary: #999999;
+  --color-dark-text-muted: #666666;
+
+  /* Shadows */
+  --shadow-card: rgba(0, 0, 0, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 1px 2px, rgba(0, 0, 0, 0.04) 0px 2px 4px;
+  --shadow-card-dark: rgba(255, 255, 255, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px 2px 4px;
+  --shadow-warm: rgba(78, 50, 23, 0.04) 0px 6px 16px;
+  --shadow-button: rgba(0, 0, 0, 0.4) 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 4px 4px;
+  --shadow-inset: rgba(0, 0, 0, 0.075) 0px 0px 0px 0.5px inset;
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
+  letter-spacing: 0.16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -48,8 +75,8 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  border-radius: 20px;
 }
 
 .card-face-back {

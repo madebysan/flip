@@ -12,7 +12,7 @@ export function ProgressBar({ total, known, review }: ProgressBarProps) {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1.5">
+      <div className="flex justify-between text-[12px] tracking-[0.14px] text-text-muted dark:text-dark-text-muted mb-2">
         <span>
           {known + review} of {total} reviewed
         </span>
@@ -20,16 +20,16 @@ export function ProgressBar({ total, known, review }: ProgressBarProps) {
           {known} known · {review} to review
         </span>
       </div>
-      <div className="w-full h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden flex">
+      <div className="w-full h-1.5 bg-surface-alt dark:bg-dark-surface-alt rounded-full overflow-hidden flex">
         {knownPct > 0 && (
           <div
-            className="h-full bg-known transition-all duration-300 ease-out"
+            className="h-full bg-known transition-all duration-500 ease-out"
             style={{ width: `${knownPct}%` }}
           />
         )}
         {reviewPct > 0 && (
           <div
-            className="h-full bg-review transition-all duration-300 ease-out"
+            className="h-full bg-review transition-all duration-500 ease-out"
             style={{ width: `${reviewPct}%` }}
           />
         )}

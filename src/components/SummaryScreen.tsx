@@ -19,18 +19,18 @@ export function SummaryScreen({
   const percentage = Math.round((known / total) * 100);
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 py-12 max-w-md mx-auto w-full text-center">
+    <div className="flex-1 flex flex-col items-center justify-center px-4 py-12 max-w-sm mx-auto w-full text-center">
       {/* Score circle */}
-      <div className="relative w-32 h-32 mb-8">
-        <svg className="w-32 h-32 -rotate-90" viewBox="0 0 128 128">
+      <div className="relative w-28 h-28 mb-10">
+        <svg className="w-28 h-28 -rotate-90" viewBox="0 0 128 128">
           <circle
             cx="64"
             cy="64"
             r="56"
             fill="none"
             stroke="currentColor"
-            className="text-gray-100 dark:text-gray-800"
-            strokeWidth="8"
+            className="text-surface-alt dark:text-dark-surface-alt"
+            strokeWidth="6"
           />
           <circle
             cx="64"
@@ -38,14 +38,14 @@ export function SummaryScreen({
             r="56"
             fill="none"
             stroke="currentColor"
-            className="text-accent"
-            strokeWidth="8"
+            className="text-text-primary dark:text-dark-text"
+            strokeWidth="6"
             strokeDasharray={`${percentage * 3.52} 352`}
             strokeLinecap="round"
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+          <span className="text-[28px] font-light tracking-[-0.5px] text-text-primary dark:text-dark-text">
             {percentage}%
           </span>
         </div>
@@ -53,24 +53,22 @@ export function SummaryScreen({
 
       {allKnown ? (
         <>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            Perfect Score!
+          <h2 className="text-[28px] font-light tracking-[-0.4px] text-text-primary dark:text-dark-text mb-2">
+            Perfect Score
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-8">
-            You knew all {total} cards. Great job!
+          <p className="text-[15px] tracking-[0.15px] text-text-muted dark:text-dark-text-muted mb-10">
+            You knew all {total} cards.
           </p>
         </>
       ) : (
         <>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          <h2 className="text-[28px] font-light tracking-[-0.4px] text-text-primary dark:text-dark-text mb-2">
             Deck Complete
           </h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-8">
-            <span className="text-known font-medium">{known} known</span>
+          <p className="text-[15px] tracking-[0.15px] text-text-muted dark:text-dark-text-muted mb-10">
+            <span className="text-known">{known} known</span>
             {" · "}
-            <span className="text-review font-medium">{review} to review</span>
-            {" · "}
-            {total} total
+            <span className="text-review">{review} to review</span>
           </p>
         </>
       )}
@@ -79,20 +77,21 @@ export function SummaryScreen({
         {review > 0 && (
           <button
             onClick={onReviewMissed}
-            className="w-full py-3 px-6 rounded-xl text-sm font-medium bg-accent text-white hover:bg-accent-dark transition-colors"
+            className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] bg-text-primary dark:bg-dark-text text-surface dark:text-dark-surface transition-colors hover:opacity-90"
           >
             Review {review} Missed Cards
           </button>
         )}
         <button
           onClick={onStudyAll}
-          className="w-full py-3 px-6 rounded-xl text-sm font-medium bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] bg-warm-stone dark:bg-dark-surface-alt text-text-primary dark:text-dark-text transition-colors hover:opacity-90"
+          style={{ boxShadow: "var(--shadow-warm)" }}
         >
           Study All Again
         </button>
         <button
           onClick={onNewDeck}
-          className="w-full py-3 px-6 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+          className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] text-text-muted dark:text-dark-text-muted hover:bg-surface-alt dark:hover:bg-dark-surface-alt transition-colors"
         >
           Create New Deck
         </button>

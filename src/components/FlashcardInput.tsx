@@ -102,12 +102,12 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 py-12 max-w-2xl mx-auto w-full">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+    <div className="flex-1 flex flex-col items-center justify-center px-4 py-16 max-w-xl mx-auto w-full">
+      <div className="text-center mb-10">
+        <h1 className="text-[36px] font-light leading-[1.17] tracking-[-0.4px] text-text-primary dark:text-dark-text mb-3 font-[var(--font-display)]">
           Turn your notes into flashcards
         </h1>
-        <p className="text-gray-500 dark:text-gray-400 text-lg">
+        <p className="text-[16px] tracking-[0.16px] leading-[1.5] text-text-secondary dark:text-dark-text-secondary">
           Paste notes, drag a file, or type any content below.
         </p>
       </div>
@@ -125,32 +125,35 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
           placeholder={`Paste any content here — lecture notes, articles, documentation, meeting notes...
 
 AI will extract the key concepts and create proper question/answer flashcards.`}
-          className={`w-full h-64 p-4 rounded-xl border-2 border-dashed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent text-sm leading-relaxed font-mono transition-colors disabled:opacity-50 ${
+          className={`w-full h-56 p-5 rounded-2xl border bg-surface dark:bg-dark-card text-text-primary dark:text-dark-text placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 resize-none focus:outline-none text-[15px] leading-[1.6] tracking-[0.15px] font-mono transition-all disabled:opacity-50 ${
             isDragging
-              ? "border-accent bg-accent-bg dark:bg-accent/10"
-              : "border-gray-200 dark:border-gray-700"
+              ? "border-text-muted/30 bg-warm-stone dark:bg-dark-surface-alt"
+              : "border-border dark:border-dark-border"
           }`}
+          style={{
+            boxShadow: isDragging ? "var(--shadow-warm)" : "var(--shadow-inset)",
+          }}
         />
 
         {isDragging && (
-          <div className="absolute inset-0 rounded-xl flex items-center justify-center bg-accent-bg/80 dark:bg-accent/10 pointer-events-none">
+          <div className="absolute inset-0 rounded-2xl flex items-center justify-center pointer-events-none">
             <div className="flex flex-col items-center gap-2">
               <svg
-                width="32"
-                height="32"
+                width="28"
+                height="28"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="text-accent"
+                className="text-text-muted dark:text-dark-text-muted"
               >
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <polyline points="7 10 12 15 17 10" />
                 <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
-              <span className="text-sm font-medium text-accent">
+              <span className="text-[13px] font-medium text-text-muted dark:text-dark-text-muted tracking-[0.14px]">
                 Drop file here
               </span>
             </div>
@@ -159,13 +162,16 @@ AI will extract the key concepts and create proper question/answer flashcards.`}
       </div>
 
       {error && (
-        <p className="text-sm text-red-500 dark:text-red-400 mt-3">{error}</p>
+        <p className="text-[13px] text-red-600 dark:text-red-400 mt-3 tracking-[0.14px]">
+          {error}
+        </p>
       )}
 
       <button
         onClick={handleGenerate}
         disabled={isLoading}
-        className="mt-4 px-8 py-3 rounded-xl bg-accent text-white font-medium hover:bg-accent-dark transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        className="mt-6 px-8 py-3 rounded-full bg-text-primary dark:bg-dark-text text-surface dark:text-dark-surface text-[15px] font-medium tracking-[0.15px] transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        style={{ boxShadow: "var(--shadow-button)" }}
       >
         {isLoading ? (
           <>
@@ -195,7 +201,7 @@ AI will extract the key concepts and create proper question/answer flashcards.`}
         )}
       </button>
 
-      <div className="mt-8 text-xs text-gray-400 dark:text-gray-600 max-w-md text-center leading-relaxed">
+      <div className="mt-10 text-[12px] text-text-muted/50 dark:text-dark-text-muted/50 max-w-sm text-center leading-[1.5] tracking-[0.14px]">
         Drop a .md or .txt file, or paste any text. AI reads your content and
         creates study-ready Q&A cards.
       </div>

@@ -10,7 +10,7 @@ export function FlashcardCard({ card, isFlipped, onFlip }: FlashcardCardProps) {
   return (
     <div
       className="card-container w-full max-w-lg mx-auto cursor-pointer select-none"
-      style={{ height: "320px" }}
+      style={{ height: "340px" }}
       onClick={onFlip}
       role="button"
       tabIndex={0}
@@ -21,27 +21,37 @@ export function FlashcardCard({ card, isFlipped, onFlip }: FlashcardCardProps) {
     >
       <div className={`card-inner ${isFlipped ? "flipped" : ""}`}>
         {/* Question side */}
-        <div className="card-face bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-lg dark:shadow-gray-950/30 border-l-4 border-l-accent">
-          <div className="text-xs uppercase tracking-wider text-accent font-medium mb-4">
+        <div
+          className="card-face bg-surface dark:bg-dark-card"
+          style={{
+            boxShadow: "var(--shadow-card)",
+          }}
+        >
+          <div className="text-[11px] uppercase tracking-[0.7px] font-medium text-text-muted dark:text-dark-text-muted mb-5">
             Question
           </div>
-          <p className="text-xl text-gray-900 dark:text-gray-100 font-medium leading-relaxed text-center px-4">
+          <p className="text-[22px] font-light leading-[1.2] tracking-[-0.3px] text-text-primary dark:text-dark-text text-center px-4 font-[var(--font-display)]">
             {card.question}
           </p>
-          <div className="text-xs text-gray-400 dark:text-gray-500 mt-6">
+          <div className="text-[12px] text-text-muted/50 dark:text-dark-text-muted/50 mt-6 tracking-[0.14px]">
             Tap to flip
           </div>
         </div>
 
         {/* Answer side */}
-        <div className="card-face card-face-back bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-950/40 dark:to-violet-950/40 border border-indigo-200 dark:border-indigo-800 shadow-lg dark:shadow-gray-950/30">
-          <div className="text-xs uppercase tracking-wider text-indigo-500 dark:text-indigo-400 font-medium mb-4">
+        <div
+          className="card-face card-face-back bg-warm-stone-solid dark:bg-dark-surface-alt"
+          style={{
+            boxShadow: "var(--shadow-warm), var(--shadow-inset)",
+          }}
+        >
+          <div className="text-[11px] uppercase tracking-[0.7px] font-medium text-text-muted dark:text-dark-text-muted mb-5">
             Answer
           </div>
-          <p className="text-lg text-gray-800 dark:text-gray-200 leading-relaxed text-center px-4">
+          <p className="text-[17px] font-normal leading-[1.55] tracking-[0.17px] text-text-secondary dark:text-dark-text-secondary text-center px-4">
             {card.answer}
           </p>
-          <div className="text-xs text-gray-400 dark:text-gray-500 mt-6">
+          <div className="text-[12px] text-text-muted/50 dark:text-dark-text-muted/50 mt-6 tracking-[0.14px]">
             Tap to flip back
           </div>
         </div>
