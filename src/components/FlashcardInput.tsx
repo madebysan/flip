@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { parseMarkdownToCards } from "../lib/parser";
+import { generateId } from "../lib/utils";
 import type { Flashcard } from "../lib/types";
 
 interface FlashcardInputProps {
@@ -9,6 +9,7 @@ interface FlashcardInputProps {
 export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
 
   const readFile = useCallback((file: File) => {
@@ -52,7 +53,7 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
     [readFile]
   );
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setError("");
     const trimmed = content.trim();
     if (!trimmed) {
@@ -60,15 +61,44 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
       return;
     }
 
-    const cards = parseMarkdownToCards(trimmed);
-    if (cards.length === 0) {
-      setError(
-        "Couldn't extract any flashcards. Try using headers (## Topic), bold definitions (**Term**: definition), or bullet points."
-      );
-      return;
-    }
+    setIsLoading(true);
 
-    onGenerate(cards, "My Deck");
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: trimmed }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Failed to generate flashcards.");
+        setIsLoading(false);
+        return;
+      }
+
+      const cards: Flashcard[] = data.cards.map(
+        (c: { question: string; answer: string }) => ({
+          id: generateId(),
+          question: c.question,
+          answer: c.answer,
+          status: "unmarked" as const,
+        })
+      );
+
+      if (cards.length === 0) {
+        setError("No flashcards could be generated from this content.");
+        setIsLoading(false);
+        return;
+      }
+
+      onGenerate(cards, "My Deck");
+    } catch {
+      setError("Could not reach the server. Make sure the dev server is running.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -78,7 +108,7 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
           Turn your notes into flashcards
         </h1>
         <p className="text-gray-500 dark:text-gray-400 text-lg">
-          Paste markdown, drag a file, or type structured text below.
+          Paste notes, drag a file, or type any content below.
         </p>
       </div>
 
@@ -91,16 +121,11 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder={`## Photosynthesis
-The process by which plants convert sunlight, water, and CO2 into glucose and oxygen.
+          disabled={isLoading}
+          placeholder={`Paste any content here — lecture notes, articles, documentation, meeting notes...
 
-## Mitochondria
-Often called the powerhouse of the cell, mitochondria generate most of the cell's ATP.
-
-**DNA**: Deoxyribonucleic acid, the molecule that carries genetic instructions.
-
-- The cell membrane is a semipermeable barrier that controls what enters and exits the cell.`}
-          className={`w-full h-64 p-4 rounded-xl border-2 border-dashed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent text-sm leading-relaxed font-mono transition-colors ${
+AI will extract the key concepts and create proper question/answer flashcards.`}
+          className={`w-full h-64 p-4 rounded-xl border-2 border-dashed bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600 resize-none focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent text-sm leading-relaxed font-mono transition-colors disabled:opacity-50 ${
             isDragging
               ? "border-accent bg-accent-bg dark:bg-accent/10"
               : "border-gray-200 dark:border-gray-700"
@@ -139,13 +164,40 @@ Often called the powerhouse of the cell, mitochondria generate most of the cell'
 
       <button
         onClick={handleGenerate}
-        className="mt-4 px-8 py-3 rounded-xl bg-accent text-white font-medium hover:bg-accent-dark transition-colors text-sm"
+        disabled={isLoading}
+        className="mt-4 px-8 py-3 rounded-xl bg-accent text-white font-medium hover:bg-accent-dark transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
       >
-        Generate Flashcards
+        {isLoading ? (
+          <>
+            <svg
+              className="animate-spin h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+            Generating...
+          </>
+        ) : (
+          "Generate Flashcards"
+        )}
       </button>
 
       <div className="mt-8 text-xs text-gray-400 dark:text-gray-600 max-w-md text-center leading-relaxed">
-        Tip: Drop a .md or .txt file, or use ## headers, **bold**: definitions, and bullet points.
+        Drop a .md or .txt file, or paste any text. AI reads your content and
+        creates study-ready Q&A cards.
       </div>
     </div>
   );
