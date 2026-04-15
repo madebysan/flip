@@ -56,15 +56,13 @@ export function FlashcardViewer({
       <div className="flex gap-3 mt-10 w-full max-w-lg">
         <button
           onClick={onMarkReview}
-          className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[0.14px] bg-review-bg text-review dark:text-yellow-500 transition-all hover:opacity-80"
-          style={{ boxShadow: "var(--shadow-inset)" }}
+          className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[0.14px] bg-[rgba(184,134,11,0.10)] border border-[rgba(184,134,11,0.15)] text-review dark:text-yellow-500 dark:bg-[rgba(184,134,11,0.08)] dark:border-[rgba(184,134,11,0.12)] transition-all hover:opacity-80 focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-alt dark:focus-visible:ring-offset-dark-surface"
         >
           Review Again
         </button>
         <button
           onClick={onMarkKnown}
-          className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[0.14px] bg-known-bg text-known dark:text-emerald-400 transition-all hover:opacity-80"
-          style={{ boxShadow: "var(--shadow-inset)" }}
+          className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[0.14px] bg-[rgba(45,138,86,0.12)] border border-[rgba(45,138,86,0.15)] text-known dark:text-emerald-400 dark:bg-[rgba(45,138,86,0.08)] dark:border-[rgba(45,138,86,0.12)] transition-all hover:opacity-80 focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-alt dark:focus-visible:ring-offset-dark-surface"
         >
           Know It
         </button>
@@ -75,16 +73,16 @@ export function FlashcardViewer({
         <button
           onClick={onPrev}
           disabled={currentIndex === 0}
-          className="p-2.5 rounded-full text-text-muted dark:text-dark-text-muted hover:bg-warm-stone dark:hover:bg-dark-surface-alt transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+          className="p-2.5 rounded-full text-text-muted dark:text-dark-text-muted hover:bg-warm-stone dark:hover:bg-dark-surface-alt transition-colors disabled:opacity-20 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
           aria-label="Previous card"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </button>
         <button
           onClick={onShuffle}
-          className="p-2.5 rounded-full text-text-muted dark:text-dark-text-muted hover:bg-warm-stone dark:hover:bg-dark-surface-alt transition-colors"
+          className="p-2.5 rounded-full text-text-muted dark:text-dark-text-muted hover:bg-warm-stone dark:hover:bg-dark-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
           aria-label="Shuffle cards"
           title="Shuffle"
         >
@@ -98,7 +96,7 @@ export function FlashcardViewer({
         </button>
         <button
           onClick={onReset}
-          className="p-2.5 rounded-full text-text-muted dark:text-dark-text-muted hover:bg-warm-stone dark:hover:bg-dark-surface-alt transition-colors"
+          className="p-2.5 rounded-full text-text-muted dark:text-dark-text-muted hover:bg-warm-stone dark:hover:bg-dark-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
           aria-label="Reset progress"
           title="Reset"
         >
@@ -110,10 +108,10 @@ export function FlashcardViewer({
         <button
           onClick={onNext}
           disabled={currentIndex === cards.length - 1}
-          className="p-2.5 rounded-full text-text-muted dark:text-dark-text-muted hover:bg-warm-stone dark:hover:bg-dark-surface-alt transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+          className="p-2.5 rounded-full text-text-muted dark:text-dark-text-muted hover:bg-warm-stone dark:hover:bg-dark-surface-alt transition-colors disabled:opacity-20 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
           aria-label="Next card"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 18 15 12 9 6" />
           </svg>
         </button>

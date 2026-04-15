@@ -125,7 +125,7 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
           placeholder={`Paste any content here — lecture notes, articles, documentation, meeting notes...
 
 AI will extract the key concepts and create proper question/answer flashcards.`}
-          className={`w-full h-56 p-5 rounded-2xl border bg-surface dark:bg-dark-card text-text-primary dark:text-dark-text placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 resize-none focus:outline-none text-[15px] leading-[1.6] tracking-[0.15px] font-mono transition-all disabled:opacity-50 ${
+          className={`w-full h-56 p-5 rounded-2xl border bg-surface dark:bg-dark-card text-text-primary dark:text-dark-text placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 resize-none focus:outline-none text-[15px] leading-[1.6] tracking-[0.15px] transition-all disabled:opacity-50 ${
             isDragging
               ? "border-text-muted/30 bg-warm-stone dark:bg-dark-surface-alt"
               : "border-border dark:border-dark-border"
@@ -170,7 +170,7 @@ AI will extract the key concepts and create proper question/answer flashcards.`}
       <button
         onClick={handleGenerate}
         disabled={isLoading}
-        className="mt-6 px-8 py-3 rounded-full bg-text-primary dark:bg-dark-text text-surface dark:text-dark-surface text-[15px] font-medium tracking-[0.15px] transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+        className="mt-6 px-8 py-3 rounded-full bg-text-primary dark:bg-dark-text text-surface dark:text-dark-surface text-[15px] font-medium tracking-[0.15px] transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
         style={{ boxShadow: "var(--shadow-button)" }}
       >
         {isLoading ? (

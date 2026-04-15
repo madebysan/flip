@@ -20,7 +20,7 @@ export function ProgressBar({ total, known, review }: ProgressBarProps) {
           {known} known · {review} to review
         </span>
       </div>
-      <div className="w-full h-1.5 bg-surface-alt dark:bg-dark-surface-alt rounded-full overflow-hidden flex">
+      <div className="w-full h-2 bg-surface-alt dark:bg-dark-surface-alt rounded-full overflow-hidden flex">
         {knownPct > 0 && (
           <div
             className="h-full bg-known transition-all duration-500 ease-out"

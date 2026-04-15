@@ -24,34 +24,34 @@ export function FlashcardCard({ card, isFlipped, onFlip }: FlashcardCardProps) {
         <div
           className="card-face bg-surface dark:bg-dark-card"
           style={{
-            boxShadow: "var(--shadow-card)",
+            boxShadow: "var(--shadow-card), var(--shadow-card-dark)",
           }}
         >
-          <div className="text-[11px] uppercase tracking-[0.7px] font-medium text-text-muted dark:text-dark-text-muted mb-5">
+          <div className="text-[11px] uppercase tracking-[0.7px] font-normal text-text-muted dark:text-dark-text-muted mb-5">
             Question
           </div>
-          <p className="text-[22px] font-light leading-[1.2] tracking-[-0.3px] text-text-primary dark:text-dark-text text-center px-4 font-[var(--font-display)]">
+          <p className="text-[22px] font-normal leading-[1.2] tracking-[-0.3px] text-text-primary dark:text-dark-text text-center px-4 font-[var(--font-display)]">
             {card.question}
           </p>
-          <div className="text-[12px] text-text-muted/50 dark:text-dark-text-muted/50 mt-6 tracking-[0.14px]">
+          <div className="text-[12px] text-text-muted/30 dark:text-dark-text-muted/30 mt-6 tracking-[0.14px]">
             Tap to flip
           </div>
         </div>
 
         {/* Answer side */}
         <div
-          className="card-face card-face-back bg-warm-stone-solid dark:bg-dark-surface-alt"
+          className="card-face card-face-back bg-warm-stone-solid dark:bg-[#1e1c1a]"
           style={{
-            boxShadow: "var(--shadow-warm), var(--shadow-inset)",
+            boxShadow: "var(--shadow-warm), var(--shadow-inset), var(--shadow-card-dark)",
           }}
         >
-          <div className="text-[11px] uppercase tracking-[0.7px] font-medium text-text-muted dark:text-dark-text-muted mb-5">
+          <div className="text-[11px] uppercase tracking-[0.7px] font-normal text-text-muted dark:text-dark-text-muted mb-5">
             Answer
           </div>
           <p className="text-[17px] font-normal leading-[1.55] tracking-[0.17px] text-text-secondary dark:text-dark-text-secondary text-center px-4">
             {card.answer}
           </p>
-          <div className="text-[12px] text-text-muted/50 dark:text-dark-text-muted/50 mt-6 tracking-[0.14px]">
+          <div className="text-[12px] text-text-muted/30 dark:text-dark-text-muted/30 mt-6 tracking-[0.14px]">
             Tap to flip back
           </div>
         </div>

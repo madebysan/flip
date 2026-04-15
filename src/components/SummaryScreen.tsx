@@ -30,7 +30,7 @@ export function SummaryScreen({
             fill="none"
             stroke="currentColor"
             className="text-surface-alt dark:text-dark-surface-alt"
-            strokeWidth="6"
+            strokeWidth="4"
           />
           <circle
             cx="64"
@@ -39,7 +39,7 @@ export function SummaryScreen({
             fill="none"
             stroke="currentColor"
             className="text-text-primary dark:text-dark-text"
-            strokeWidth="6"
+            strokeWidth="4"
             strokeDasharray={`${percentage * 3.52} 352`}
             strokeLinecap="round"
           />
@@ -77,21 +77,21 @@ export function SummaryScreen({
         {review > 0 && (
           <button
             onClick={onReviewMissed}
-            className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] bg-text-primary dark:bg-dark-text text-surface dark:text-dark-surface transition-colors hover:opacity-90"
+            className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] bg-text-primary dark:bg-dark-text text-surface dark:text-dark-surface transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
           >
             Review {review} Missed Cards
           </button>
         )}
         <button
           onClick={onStudyAll}
-          className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] bg-warm-stone dark:bg-dark-surface-alt text-text-primary dark:text-dark-text transition-colors hover:opacity-90"
+          className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] bg-warm-stone dark:bg-dark-surface-alt dark:border dark:border-dark-border text-text-primary dark:text-dark-text transition-colors hover:opacity-90 focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
           style={{ boxShadow: "var(--shadow-warm)" }}
         >
           Study All Again
         </button>
         <button
           onClick={onNewDeck}
-          className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] text-text-muted dark:text-dark-text-muted hover:bg-surface-alt dark:hover:bg-dark-surface-alt transition-colors"
+          className="w-full py-3 px-6 rounded-full text-[15px] font-medium tracking-[0.15px] text-text-muted dark:text-dark-text-muted hover:bg-surface-alt dark:hover:bg-dark-surface-alt transition-colors focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
         >
           Create New Deck
         </button>

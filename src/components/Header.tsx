@@ -16,13 +16,13 @@ export function Header({
   onNewDeck,
 }: HeaderProps) {
   return (
-    <header className="flex items-center justify-between px-6 py-4 border-b border-border-subtle dark:border-dark-border bg-surface dark:bg-dark-surface sticky top-0 z-10">
-      <div className="flex items-center gap-3">
-        <span className="text-[15px] font-medium tracking-[0.15px] text-text-primary dark:text-dark-text">
+    <header className="flex items-center justify-between px-6 py-4 border-b border-border-subtle dark:border-[rgba(255,255,255,0.05)] bg-surface dark:bg-dark-surface sticky top-0 z-10">
+      <div className="flex items-center gap-3 min-w-0">
+        <span className="text-[15px] font-medium tracking-[0.15px] text-text-primary dark:text-dark-text shrink-0">
           FlashForge
         </span>
         {deckName && (
-          <span className="text-[13px] text-text-muted dark:text-dark-text-muted">
+          <span className="text-[13px] text-text-muted dark:text-dark-text-muted truncate">
             / {deckName}
           </span>
         )}
