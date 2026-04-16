@@ -53,6 +53,18 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
     [readFile]
   );
 
+  const loadDemo = useCallback(async () => {
+    setError("");
+    try {
+      const response = await fetch("/demo.md");
+      if (!response.ok) throw new Error("Failed");
+      const text = await response.text();
+      setContent(text);
+    } catch {
+      setError("Couldn't load the demo file.");
+    }
+  }, []);
+
   const handleGenerate = async () => {
     setError("");
     const trimmed = content.trim();
@@ -203,7 +215,16 @@ AI will extract the key concepts and create proper question/answer flashcards.`}
 
       <div className="mt-10 text-[12px] text-text-muted/50 dark:text-dark-text-muted/50 max-w-sm text-center leading-[1.5] tracking-[0.14px]">
         Drop a .md or .txt file, or paste any text. AI reads your content and
-        creates study-ready Q&A cards.
+        creates study-ready Q&A cards.{" "}
+        <button
+          type="button"
+          onClick={loadDemo}
+          disabled={isLoading}
+          className="underline underline-offset-2 hover:text-text-muted dark:hover:text-dark-text-muted transition-colors disabled:opacity-50"
+        >
+          Try a demo
+        </button>
+        .
       </div>
     </div>
   );
