@@ -56,14 +56,23 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
   const loadDemo = useCallback(async () => {
     setError("");
     try {
-      const response = await fetch("/demo.md");
+      const response = await fetch("/demo.json");
       if (!response.ok) throw new Error("Failed");
-      const text = await response.text();
-      setContent(text);
+      const data = (await response.json()) as {
+        cards: Array<{ question: string; answer: string }>;
+        name: string;
+      };
+      const cards: Flashcard[] = data.cards.map((c) => ({
+        id: generateId(),
+        question: c.question,
+        answer: c.answer,
+        status: "unmarked" as const,
+      }));
+      onGenerate(cards, data.name || "Demo Deck");
     } catch {
-      setError("Couldn't load the demo file.");
+      setError("Couldn't load the demo deck.");
     }
-  }, []);
+  }, [onGenerate]);
 
   const handleGenerate = async () => {
     setError("");
