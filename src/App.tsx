@@ -1,13 +1,18 @@
+import { useState } from "react";
 import { Header } from "./components/Header";
 import { FlashcardInput } from "./components/FlashcardInput";
 import { FlashcardViewer } from "./components/FlashcardViewer";
 import { SummaryScreen } from "./components/SummaryScreen";
+import { ApiKeyPrompt } from "./components/ApiKeyPrompt";
 import { useFlashcards } from "./hooks/useFlashcards";
 import { useTheme } from "./hooks/useTheme";
 import { useKeyboard } from "./hooks/useKeyboard";
+import { useApiKey } from "./hooks/useApiKey";
 
 function App() {
   const { theme, toggleTheme } = useTheme();
+  const { apiKey, setApiKey, removeApiKey } = useApiKey();
+  const [showKeyPrompt, setShowKeyPrompt] = useState(false);
   const {
     cards,
     currentIndex,
@@ -44,9 +49,16 @@ function App() {
         deckName={deckName}
         showNewDeck={view !== "input"}
         onNewDeck={startNewDeck}
+        onOpenKeySettings={() => setShowKeyPrompt(true)}
       />
 
-      {view === "input" && <FlashcardInput onGenerate={loadNewDeck} />}
+      {view === "input" && (
+        <FlashcardInput
+          onGenerate={loadNewDeck}
+          apiKey={apiKey}
+          onRequestKey={() => setShowKeyPrompt(true)}
+        />
+      )}
 
       {view === "study" && currentCard && (
         <FlashcardViewer
@@ -74,6 +86,18 @@ function App() {
           onStudyAll={studyAll}
           onReviewMissed={reviewMissed}
           onNewDeck={startNewDeck}
+        />
+      )}
+
+      {showKeyPrompt && (
+        <ApiKeyPrompt
+          initialKey={apiKey ?? undefined}
+          onSave={(key) => {
+            setApiKey(key);
+            setShowKeyPrompt(false);
+          }}
+          onClose={() => setShowKeyPrompt(false)}
+          onClear={removeApiKey}
         />
       )}
     </div>

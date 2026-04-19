@@ -2,11 +2,30 @@ import { useState, useCallback } from "react";
 import { generateId } from "../lib/utils";
 import type { Flashcard } from "../lib/types";
 
+const PROMPT = (content: string) => `You are a flashcard generator. Given the following content, create high-quality study flashcards.
+
+Rules:
+- Each card must have a clear, specific QUESTION and a concise ANSWER
+- Questions should test understanding, not just recall section titles
+- Answers should be 1-3 sentences max
+- Skip structural content (section headers, timestamps, agendas, metadata)
+- Focus on facts, concepts, definitions, and key insights
+- Generate 10-30 cards depending on content density
+- Output ONLY valid JSON array, no markdown, no explanation
+
+Output format:
+[{"question": "...", "answer": "..."}, ...]
+
+Content:
+${content}`;
+
 interface FlashcardInputProps {
   onGenerate: (cards: Flashcard[], name: string) => void;
+  apiKey: string | null;
+  onRequestKey: () => void;
 }
 
-export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
+export function FlashcardInput({ onGenerate, apiKey, onRequestKey }: FlashcardInputProps) {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -82,31 +101,68 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
       return;
     }
 
+    if (!apiKey) {
+      onRequestKey();
+      return;
+    }
+
     setIsLoading(true);
 
+    const truncated =
+      trimmed.length > 12000
+        ? trimmed.slice(0, 12000) + "\n\n[Content truncated]"
+        : trimmed;
+
     try {
-      const response = await fetch("/api/generate", {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: trimmed }),
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true",
+        },
+        body: JSON.stringify({
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 4096,
+          messages: [{ role: "user", content: PROMPT(truncated) }],
+        }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        setError(data.error || "Failed to generate flashcards.");
+        const errData = await response.json().catch(() => null);
+        const message = errData?.error?.message || `Claude API error: ${response.status}`;
+        if (response.status === 401) {
+          setError("That API key was rejected. Check it and try again.");
+          onRequestKey();
+        } else {
+          setError(message);
+        }
         setIsLoading(false);
         return;
       }
 
-      const cards: Flashcard[] = data.cards.map(
-        (c: { question: string; answer: string }) => ({
-          id: generateId(),
-          question: c.question,
-          answer: c.answer,
-          status: "unmarked" as const,
-        })
-      );
+      const data = (await response.json()) as {
+        content: Array<{ type: string; text: string }>;
+      };
+      const text = data.content[0]?.text || "[]";
+      const jsonMatch = text.match(/\[[\s\S]*\]/);
+      if (!jsonMatch) {
+        setError("Couldn't parse flashcards from the AI response.");
+        setIsLoading(false);
+        return;
+      }
+
+      const parsed = JSON.parse(jsonMatch[0]) as Array<{
+        question: string;
+        answer: string;
+      }>;
+      const cards: Flashcard[] = parsed.map((c) => ({
+        id: generateId(),
+        question: c.question,
+        answer: c.answer,
+        status: "unmarked" as const,
+      }));
 
       if (cards.length === 0) {
         setError("No flashcards could be generated from this content.");
@@ -116,7 +172,7 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
 
       onGenerate(cards, "My Deck");
     } catch {
-      setError("Could not reach the server. Make sure the dev server is running.");
+      setError("Could not reach Claude. Check your connection and try again.");
     } finally {
       setIsLoading(false);
     }
