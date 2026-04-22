@@ -47,7 +47,6 @@ function App() {
       <Header
         theme={theme}
         onToggleTheme={toggleTheme}
-        deckName={deckName}
         showNewDeck={view !== "input"}
         onNewDeck={startNewDeck}
         onOpenKeySettings={() => setShowKeyPrompt(true)}
@@ -69,6 +68,7 @@ function App() {
           isFlipped={isFlipped}
           knownCount={knownCount}
           reviewCount={reviewCount}
+          deckName={deckName}
           onFlip={flipCard}
           onPrev={goToPrev}
           onNext={goToNext}

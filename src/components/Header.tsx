@@ -3,7 +3,6 @@ import { ThemeToggle } from "./ThemeToggle";
 interface HeaderProps {
   theme: "light" | "dark";
   onToggleTheme: () => void;
-  deckName: string;
   showNewDeck: boolean;
   onNewDeck: () => void;
   onOpenKeySettings: () => void;
@@ -12,22 +11,17 @@ interface HeaderProps {
 export function Header({
   theme,
   onToggleTheme,
-  deckName,
   showNewDeck,
   onNewDeck,
   onOpenKeySettings,
 }: HeaderProps) {
   return (
     <header className="flex items-center justify-between px-6 py-4 border-b border-border-subtle dark:border-[rgba(255,255,255,0.05)] bg-surface dark:bg-dark-surface sticky top-0 z-10">
-      <div className="flex items-center gap-3 min-w-0">
+      <div className="flex items-center gap-2 min-w-0">
+        <img src="/favicon.png" alt="" aria-hidden="true" className="w-6 h-6 shrink-0" />
         <span className="text-[15px] font-medium tracking-[0.15px] text-text-primary dark:text-dark-text shrink-0">
           Flip
         </span>
-        {deckName && (
-          <span className="text-[13px] text-text-muted dark:text-dark-text-muted truncate">
-            / {deckName}
-          </span>
-        )}
       </div>
       <div className="flex items-center gap-2">
         {showNewDeck && (

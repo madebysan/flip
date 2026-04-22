@@ -9,6 +9,7 @@ interface FlashcardViewerProps {
   isFlipped: boolean;
   knownCount: number;
   reviewCount: number;
+  deckName: string;
   onFlip: () => void;
   onPrev: () => void;
   onNext: () => void;
@@ -25,6 +26,7 @@ export function FlashcardViewer({
   isFlipped,
   knownCount,
   reviewCount,
+  deckName,
   onFlip,
   onPrev,
   onNext,
@@ -35,6 +37,13 @@ export function FlashcardViewer({
 }: FlashcardViewerProps) {
   return (
     <div className="flex-1 flex flex-col items-center px-4 py-10 max-w-2xl mx-auto w-full">
+      {/* Deck name */}
+      {deckName && (
+        <div className="text-[13px] font-medium tracking-[0.14px] text-text-secondary dark:text-dark-text-secondary mb-6">
+          {deckName}
+        </div>
+      )}
+
       {/* Progress */}
       <div className="w-full max-w-lg mb-10">
         <ProgressBar
