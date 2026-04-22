@@ -30,7 +30,7 @@ export function InstructionsDialog({ onClose }: InstructionsDialogProps) {
           Click a card to flip it and see the answer. Mark each card as <em className="not-italic font-medium text-text-primary dark:text-dark-text">I know it</em> or <em className="not-italic font-medium text-text-primary dark:text-dark-text">I don't know</em> to track your progress.
         </p>
         <p className="text-[14px] leading-[1.6] tracking-[-0.14px] text-text-secondary dark:text-dark-text-secondary mb-8">
-          Pick a deck from the tabs above to get started, or paste your own notes on the next screen.
+          To build your own deck, copy the prompt from the new-deck screen, paste it into ChatGPT, Gemini, or Claude with your topic, then paste the JSON response back into Flip.
         </p>
         <button
           onClick={onClose}

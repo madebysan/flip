@@ -78,18 +78,17 @@ Always side-by-side, equal width, below the card. Primary (I know it) on the rig
 ### Instructions dialog
 Shown once on first visit. Backdrop: `bg-black/20` in light, `bg-black/50` in dark, with `backdrop-blur-sm`. Dismissable via button, Escape key, or click outside.
 
-### API key prompt
-Same dialog pattern. Modal with backdrop, centered card, outlined input, pill save button.
+### New-deck screen
+Three-step guided flow on a single screen: (1) copy prompt from a code-styled pre-block with inline Copy button, (2) instruction text pointing to external LLM, (3) paste JSON response into a mono-font textarea. Step labels use `uppercase` + positive letter-spacing (`0.6px`) to echo Figma's `figmaMono` signage.
 
 ## Shared components
 
 | Component | Purpose | Path |
 |---|---|---|
-| `Header` | Logo + deck tabs + theme/key/new-deck buttons | `src/components/Header.tsx` |
+| `Header` | Logo + deck tabs + theme/new-deck buttons | `src/components/Header.tsx` |
 | `FlashcardCard` | 3D flip animation, front/back faces | `src/components/FlashcardCard.tsx` |
 | `FlashcardViewer` | Progress, card, know/don't-know, nav | `src/components/FlashcardViewer.tsx` |
-| `FlashcardInput` | Textarea, drag-drop, generate button | `src/components/FlashcardInput.tsx` |
-| `ApiKeyPrompt` | Modal for API key entry | `src/components/ApiKeyPrompt.tsx` |
+| `FlashcardInput` | 3-step deck-builder: copy prompt, paste JSON | `src/components/FlashcardInput.tsx` |
 | `InstructionsDialog` | First-visit onboarding modal | `src/components/InstructionsDialog.tsx` |
 | `SummaryScreen` | End-of-deck review + percentage ring | `src/components/SummaryScreen.tsx` |
 | `ProgressBar` | Known/review/remaining progress | `src/components/ProgressBar.tsx` |
@@ -102,6 +101,7 @@ Same dialog pattern. Modal with backdrop, centered card, outlined input, pill sa
 - **Demo decks as header tabs** (2026-04-22) — was a footer link, moved up for discoverability. Active deck gets an underline. The footer was removed entirely since it held nothing else.
 - **Deck name lives in content, not the header** (2026-04-22) — previously shown as "Flip / Deck Name" in header. Moved to a small muted label above the progress bar so the header carries only the app identity.
 - **Grey page background, white cards** (2026-04-22) — pure white on white made the card bleed into the page. `#f5f5f5` page + `#ffffff` card gives just enough layering.
+- **Removed BYOK flow, replaced with copy-paste prompt** (2026-04-22) — app no longer asks for an Anthropic API key. User copies a pre-formatted prompt, pastes into any LLM, gets JSON back, pastes into Flip. Zero backend, zero keys, works with ChatGPT / Gemini / Claude / anything that returns JSON. Matches the MIT / non-commercial ethos.
 
 ## Anti-patterns (don't repeat)
 

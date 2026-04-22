@@ -1,266 +1,204 @@
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { generateId } from "../lib/utils";
 import type { Flashcard } from "../lib/types";
 
-const PROMPT = (content: string) => `You are a flashcard generator. Given the following content, create high-quality study flashcards.
+const PROMPT = `You are a flashcard generator. I'll give you a topic, some notes, or an attached file. Create 15–25 focused Q&A flashcards based on it.
+
+Return ONLY valid JSON in this exact format — no markdown fences, no commentary, no extra text around it:
+
+{
+  "name": "A short name for this deck (3–6 words)",
+  "cards": [
+    { "question": "...", "answer": "..." }
+  ]
+}
 
 Rules:
-- Each card must have a clear, specific QUESTION and a concise ANSWER
-- Questions should test understanding, not just recall section titles
-- Answers should be 1-3 sentences max
-- Skip structural content (section headers, timestamps, agendas, metadata)
+- Each question tests understanding, not just recall
+- Each answer is 1–3 sentences max
 - Focus on facts, concepts, definitions, and key insights
-- Generate 10-30 cards depending on content density
-- Output ONLY valid JSON array, no markdown, no explanation
+- Skip structural content (headers, metadata, table of contents)
 
-Output format:
-[{"question": "...", "answer": "..."}, ...]
-
-Content:
-${content}`;
+Topic or content:`;
 
 interface FlashcardInputProps {
   onGenerate: (cards: Flashcard[], name: string) => void;
-  apiKey: string | null;
-  onRequestKey: () => void;
 }
 
-export function FlashcardInput({ onGenerate, apiKey, onRequestKey }: FlashcardInputProps) {
-  const [content, setContent] = useState("");
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+type ParseResult =
+  | { ok: true; name: string; cards: Array<{ question: string; answer: string }> }
+  | { ok: false; error: string };
 
-  const readFile = useCallback((file: File) => {
-    setError("");
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const text = e.target?.result;
-      if (typeof text === "string") {
-        setContent(text);
-      }
+function parseDeckJson(raw: string): ParseResult {
+  let cleaned = raw.trim();
+
+  // Strip markdown code fences if present
+  const fenceMatch = cleaned.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```\s*$/);
+  if (fenceMatch) cleaned = fenceMatch[1].trim();
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(cleaned);
+  } catch {
+    return {
+      ok: false,
+      error: "That doesn't look like valid JSON. Make sure you copied the whole response.",
     };
-    reader.onerror = () => {
-      setError("Couldn't read that file. Try a .md or .txt file.");
-    };
-    reader.readAsText(file);
-  }, []);
+  }
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(true);
-  }, []);
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    return { ok: false, error: "JSON should be an object with a cards array." };
+  }
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-  }, []);
+  const obj = parsed as { cards?: unknown; name?: unknown };
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
+  if (!Array.isArray(obj.cards)) {
+    return { ok: false, error: "JSON is missing the 'cards' array." };
+  }
 
-      const file = e.dataTransfer.files[0];
-      if (file) {
-        readFile(file);
-      }
-    },
-    [readFile]
+  if (obj.cards.length === 0) {
+    return { ok: false, error: "The cards array is empty." };
+  }
+
+  const cardsValid = obj.cards.every(
+    (c) =>
+      c && typeof c === "object" && typeof (c as { question?: unknown }).question === "string" && typeof (c as { answer?: unknown }).answer === "string"
   );
+  if (!cardsValid) {
+    return {
+      ok: false,
+      error: "Each card must have a question and an answer (both strings).",
+    };
+  }
 
-  const handleGenerate = async () => {
-    setError("");
-    const trimmed = content.trim();
-    if (!trimmed) {
-      setError("Paste some content first.");
-      return;
-    }
+  return {
+    ok: true,
+    name: typeof obj.name === "string" && obj.name.trim() ? obj.name.trim() : "New Deck",
+    cards: obj.cards as Array<{ question: string; answer: string }>,
+  };
+}
 
-    if (!apiKey) {
-      onRequestKey();
-      return;
-    }
+export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
+  const [jsonInput, setJsonInput] = useState("");
+  const [error, setError] = useState("");
+  const [copied, setCopied] = useState(false);
 
-    setIsLoading(true);
-
-    const truncated =
-      trimmed.length > 12000
-        ? trimmed.slice(0, 12000) + "\n\n[Content truncated]"
-        : trimmed;
-
+  const copyPrompt = async () => {
     try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true",
-        },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 4096,
-          messages: [{ role: "user", content: PROMPT(truncated) }],
-        }),
-      });
-
-      if (!response.ok) {
-        const errData = await response.json().catch(() => null);
-        const message = errData?.error?.message || `Claude API error: ${response.status}`;
-        if (response.status === 401) {
-          setError("That API key was rejected. Check it and try again.");
-          onRequestKey();
-        } else {
-          setError(message);
-        }
-        setIsLoading(false);
-        return;
-      }
-
-      const data = (await response.json()) as {
-        content: Array<{ type: string; text: string }>;
-      };
-      const text = data.content[0]?.text || "[]";
-      const jsonMatch = text.match(/\[[\s\S]*\]/);
-      if (!jsonMatch) {
-        setError("Couldn't parse flashcards from the AI response.");
-        setIsLoading(false);
-        return;
-      }
-
-      const parsed = JSON.parse(jsonMatch[0]) as Array<{
-        question: string;
-        answer: string;
-      }>;
-      const cards: Flashcard[] = parsed.map((c) => ({
-        id: generateId(),
-        question: c.question,
-        answer: c.answer,
-        status: "unmarked" as const,
-      }));
-
-      if (cards.length === 0) {
-        setError("No flashcards could be generated from this content.");
-        setIsLoading(false);
-        return;
-      }
-
-      onGenerate(cards, "My Deck");
+      await navigator.clipboard.writeText(PROMPT);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
-      setError("Could not reach Claude. Check your connection and try again.");
-    } finally {
-      setIsLoading(false);
+      // Clipboard API failed — fall back to selecting the prompt text
     }
   };
 
+  const loadDeck = () => {
+    setError("");
+    if (!jsonInput.trim()) {
+      setError("Paste the JSON response first.");
+      return;
+    }
+
+    const result = parseDeckJson(jsonInput);
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+
+    const cards: Flashcard[] = result.cards.map((c) => ({
+      id: generateId(),
+      question: c.question,
+      answer: c.answer,
+      status: "unmarked" as const,
+    }));
+
+    onGenerate(cards, result.name);
+  };
+
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 py-16 max-w-xl mx-auto w-full">
+    <div className="flex-1 flex flex-col items-center px-4 py-12 max-w-2xl mx-auto w-full">
       <div className="text-center mb-10">
-        <h1 className="text-[36px] font-light leading-[1.17] tracking-[-0.4px] text-text-primary dark:text-dark-text mb-3 font-[var(--font-display)]">
+        <h1 className="text-[36px] font-light leading-[1.17] tracking-[-0.4px] text-text-primary dark:text-dark-text mb-3">
           Turn your notes into flashcards
         </h1>
-        <p className="text-[16px] tracking-[0.16px] leading-[1.5] text-text-secondary dark:text-dark-text-secondary">
-          Paste notes, drag a file, or type any content below.
+        <p className="text-[16px] tracking-[-0.14px] leading-[1.5] text-text-secondary dark:text-dark-text-secondary">
+          Three steps. No API key, no account.
         </p>
       </div>
 
-      <div
-        className="w-full relative"
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
+      {/* Step 1 — Copy the prompt */}
+      <section className="w-full mb-8">
+        <div className="flex items-baseline gap-3 mb-3">
+          <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
+            Step 1
+          </span>
+          <span className="text-[14px] font-medium tracking-[-0.14px] text-text-primary dark:text-dark-text">
+            Copy this prompt
+          </span>
+        </div>
+        <div className="relative">
+          <pre
+            className="w-full p-5 pr-24 rounded-2xl border border-border dark:border-dark-border bg-surface dark:bg-dark-card text-text-secondary dark:text-dark-text-secondary text-[13px] leading-[1.6] tracking-[-0.14px] whitespace-pre-wrap font-sans max-h-64 overflow-y-auto"
+            style={{ boxShadow: "var(--shadow-inset)" }}
+          >
+            {PROMPT}
+          </pre>
+          <button
+            onClick={copyPrompt}
+            className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-black text-white dark:bg-white dark:text-black text-[12px] font-medium tracking-[-0.12px] transition-opacity hover:opacity-90"
+          >
+            {copied ? "Copied" : "Copy"}
+          </button>
+        </div>
+      </section>
+
+      {/* Step 2 — Paste into LLM */}
+      <section className="w-full mb-8">
+        <div className="flex items-baseline gap-3 mb-3">
+          <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
+            Step 2
+          </span>
+          <span className="text-[14px] font-medium tracking-[-0.14px] text-text-primary dark:text-dark-text">
+            Paste into ChatGPT, Gemini, or Claude
+          </span>
+        </div>
+        <p className="text-[14px] leading-[1.55] tracking-[-0.14px] text-text-secondary dark:text-dark-text-secondary">
+          Tell the LLM your topic (e.g. <em className="not-italic font-medium text-text-primary dark:text-dark-text">History of the UK</em>), or attach a file — a PDF, article, or lecture notes you want to study.
+        </p>
+      </section>
+
+      {/* Step 3 — Paste JSON response */}
+      <section className="w-full mb-6">
+        <div className="flex items-baseline gap-3 mb-3">
+          <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
+            Step 3
+          </span>
+          <span className="text-[14px] font-medium tracking-[-0.14px] text-text-primary dark:text-dark-text">
+            Paste the JSON response here
+          </span>
+        </div>
         <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          disabled={isLoading}
-          placeholder={`Paste any content here — lecture notes, articles, documentation, meeting notes...
-
-AI will extract the key concepts and create proper question/answer flashcards.`}
-          className={`w-full h-56 p-5 rounded-2xl border bg-surface dark:bg-dark-card text-text-primary dark:text-dark-text placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 resize-none focus:outline-none text-[15px] leading-[1.6] tracking-[0.15px] transition-all disabled:opacity-50 ${
-            isDragging
-              ? "border-text-muted/30 bg-warm-stone dark:bg-dark-surface-alt"
-              : "border-border dark:border-dark-border"
-          }`}
-          style={{
-            boxShadow: isDragging ? "var(--shadow-warm)" : "var(--shadow-inset)",
-          }}
+          value={jsonInput}
+          onChange={(e) => setJsonInput(e.target.value)}
+          placeholder={`{\n  "name": "...",\n  "cards": [ ... ]\n}`}
+          className="w-full h-40 p-5 rounded-2xl border border-border dark:border-dark-border bg-surface dark:bg-dark-card text-text-primary dark:text-dark-text placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 resize-none focus:outline-none text-[13px] leading-[1.6] tracking-[-0.14px] font-mono"
+          style={{ boxShadow: "var(--shadow-inset)" }}
         />
-
-        {isDragging && (
-          <div className="absolute inset-0 rounded-2xl flex items-center justify-center pointer-events-none">
-            <div className="flex flex-col items-center gap-2">
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-text-muted dark:text-dark-text-muted"
-              >
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              <span className="text-[13px] font-medium text-text-muted dark:text-dark-text-muted tracking-[0.14px]">
-                Drop file here
-              </span>
-            </div>
-          </div>
+        {error && (
+          <p className="text-[13px] text-red-600 dark:text-red-400 mt-3 tracking-[-0.14px]">
+            {error}
+          </p>
         )}
-      </div>
-
-      {error && (
-        <p className="text-[13px] text-red-600 dark:text-red-400 mt-3 tracking-[0.14px]">
-          {error}
-        </p>
-      )}
+      </section>
 
       <button
-        onClick={handleGenerate}
-        disabled={isLoading}
-        className="mt-6 px-8 py-3 rounded-full bg-text-primary dark:bg-dark-text text-surface dark:text-dark-surface text-[15px] font-medium tracking-[0.15px] transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2"
-        style={{ boxShadow: "var(--shadow-button)" }}
+        onClick={loadDeck}
+        disabled={!jsonInput.trim()}
+        className="px-8 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-[15px] font-medium tracking-[-0.15px] transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
       >
-        {isLoading ? (
-          <>
-            <svg
-              className="animate-spin h-4 w-4"
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            Generating...
-          </>
-        ) : (
-          "Generate Flashcards"
-        )}
+        Load deck
       </button>
-
-      <div className="mt-10 text-[12px] text-text-muted/50 dark:text-dark-text-muted/50 max-w-sm text-center leading-[1.5] tracking-[0.14px]">
-        Drop a .md or .txt file, or paste any text. AI reads your content and
-        creates study-ready Q&A cards.
-      </div>
     </div>
   );
 }

@@ -3,19 +3,15 @@ import { Header } from "./components/Header";
 import { FlashcardInput } from "./components/FlashcardInput";
 import { FlashcardViewer } from "./components/FlashcardViewer";
 import { SummaryScreen } from "./components/SummaryScreen";
-import { ApiKeyPrompt } from "./components/ApiKeyPrompt";
 import { InstructionsDialog } from "./components/InstructionsDialog";
 import { useFlashcards } from "./hooks/useFlashcards";
 import { useTheme } from "./hooks/useTheme";
 import { useKeyboard } from "./hooks/useKeyboard";
-import { useApiKey } from "./hooks/useApiKey";
 
 const INSTRUCTIONS_KEY = "flip-has-seen-instructions";
 
 function App() {
   const { theme, toggleTheme } = useTheme();
-  const { apiKey, setApiKey, removeApiKey } = useApiKey();
-  const [showKeyPrompt, setShowKeyPrompt] = useState(false);
   const [showInstructions, setShowInstructions] = useState(
     () => typeof window !== "undefined" && localStorage.getItem(INSTRUCTIONS_KEY) !== "true"
   );
@@ -24,6 +20,7 @@ function App() {
     localStorage.setItem(INSTRUCTIONS_KEY, "true");
     setShowInstructions(false);
   };
+
   const {
     cards,
     currentIndex,
@@ -59,18 +56,11 @@ function App() {
         onToggleTheme={toggleTheme}
         showNewDeck={view !== "input"}
         onNewDeck={startNewDeck}
-        onOpenKeySettings={() => setShowKeyPrompt(true)}
         onLoadDeck={loadNewDeck}
         currentDeckName={deckName}
       />
 
-      {view === "input" && (
-        <FlashcardInput
-          onGenerate={loadNewDeck}
-          apiKey={apiKey}
-          onRequestKey={() => setShowKeyPrompt(true)}
-        />
-      )}
+      {view === "input" && <FlashcardInput onGenerate={loadNewDeck} />}
 
       {view === "study" && currentCard && (
         <FlashcardViewer
@@ -99,18 +89,6 @@ function App() {
           onStudyAll={studyAll}
           onReviewMissed={reviewMissed}
           onNewDeck={startNewDeck}
-        />
-      )}
-
-      {showKeyPrompt && (
-        <ApiKeyPrompt
-          initialKey={apiKey ?? undefined}
-          onSave={(key) => {
-            setApiKey(key);
-            setShowKeyPrompt(false);
-          }}
-          onClose={() => setShowKeyPrompt(false)}
-          onClear={removeApiKey}
         />
       )}
 
