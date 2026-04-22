@@ -141,9 +141,9 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center px-4 py-12 max-w-2xl mx-auto w-full">
-      <div className="text-center mb-12">
-        <h1 className="text-[36px] font-light leading-[1.17] tracking-[-0.4px] text-text-primary dark:text-dark-text mb-3">
+    <div className="flex-1 flex flex-col items-center px-4 py-8 sm:py-12 max-w-2xl mx-auto w-full">
+      <div className="text-center mb-8 sm:mb-12">
+        <h1 className="text-[28px] sm:text-[36px] font-light leading-[1.17] tracking-[-0.4px] text-text-primary dark:text-dark-text mb-3">
           Turn your notes into flashcards
         </h1>
         <p className="text-[16px] tracking-[-0.14px] leading-[1.5] text-text-secondary dark:text-dark-text-secondary">
@@ -152,21 +152,21 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
       </div>
 
       {/* Step 1 — Copy the prompt */}
-      <section className="w-full mb-10">
+      <section className="w-full mb-8 sm:mb-10">
         <div className="flex items-baseline gap-3 mb-2">
           <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
             Step 1
           </span>
-          <span className="text-[14px] font-medium tracking-[-0.14px] text-text-primary dark:text-dark-text">
+          <span className="text-[15px] font-semibold tracking-[-0.14px] text-text-primary dark:text-dark-text">
             Copy the prompt
           </span>
         </div>
-        <p className="text-[14px] leading-[1.55] tracking-[-0.14px] text-text-secondary dark:text-dark-text-secondary mb-4">
+        <p className="text-[14px] leading-[1.55] tracking-[-0.14px] text-text-secondary dark:text-dark-text-secondary mb-5">
           A pre-formatted instruction that tells the AI to return flashcards as JSON.
         </p>
         <button
           onClick={copyPrompt}
-          className="px-6 py-2.5 rounded-full bg-black text-white dark:bg-white dark:text-black text-[14px] font-medium tracking-[-0.14px] transition-opacity hover:opacity-90 flex items-center gap-2"
+          className="px-6 py-3 rounded-full bg-black text-white dark:bg-white dark:text-black text-[14px] font-medium tracking-[-0.14px] transition-all duration-150 hover:opacity-90 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black dark:focus-visible:ring-white"
         >
           {copied ? (
             <>
@@ -188,12 +188,12 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
       </section>
 
       {/* Step 2 — Paste into LLM */}
-      <section className="w-full mb-10">
+      <section className="w-full mb-8 sm:mb-10">
         <div className="flex items-baseline gap-3 mb-2">
           <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
             Step 2
           </span>
-          <span className="text-[14px] font-medium tracking-[-0.14px] text-text-primary dark:text-dark-text">
+          <span className="text-[15px] font-semibold tracking-[-0.14px] text-text-primary dark:text-dark-text">
             Paste it into ChatGPT, Gemini, or Claude
           </span>
         </div>
@@ -206,22 +206,20 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
 
       {/* Step 3 — Paste JSON response */}
       <section className="w-full mb-6">
-        <div className="flex items-baseline gap-3 mb-2">
+        <div className="flex items-baseline gap-3 mb-4">
           <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
             Step 3
           </span>
-          <span className="text-[14px] font-medium tracking-[-0.14px] text-text-primary dark:text-dark-text">
+          <span className="text-[15px] font-semibold tracking-[-0.14px] text-text-primary dark:text-dark-text">
             Paste the JSON response here
           </span>
         </div>
-        <p className="text-[14px] leading-[1.55] tracking-[-0.14px] text-text-secondary dark:text-dark-text-secondary mb-4">
-          Flip reads the JSON and builds your deck.
-        </p>
         <textarea
           value={jsonInput}
           onChange={(e) => setJsonInput(e.target.value)}
+          aria-label="JSON response from the AI"
           placeholder={`{\n  "name": "...",\n  "cards": [ ... ]\n}`}
-          className="w-full h-40 p-5 rounded-2xl border border-border dark:border-dark-border bg-surface dark:bg-dark-card text-text-primary dark:text-dark-text placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 resize-none focus:outline-none text-[13px] leading-[1.6] tracking-[-0.14px] font-mono"
+          className="w-full h-56 p-5 rounded-2xl border border-border dark:border-dark-border bg-surface dark:bg-dark-card text-text-primary dark:text-dark-text placeholder:text-text-muted/50 dark:placeholder:text-dark-text-muted/50 resize-none focus:outline-none text-[13px] leading-[1.6] tracking-[-0.14px] font-mono focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/20 dark:focus-visible:ring-white/20"
           style={{ boxShadow: "var(--shadow-inset)" }}
         />
         {error && (
@@ -234,14 +232,16 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
       <button
         onClick={loadDeck}
         disabled={!jsonInput.trim()}
-        className="px-8 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-[15px] font-medium tracking-[-0.15px] transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="px-8 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-[15px] font-medium tracking-[-0.15px] transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black dark:focus-visible:ring-white"
       >
         Load deck
       </button>
 
+      <div className="w-12 h-px bg-border dark:bg-dark-border my-6" aria-hidden="true" />
+
       <button
         onClick={loadDemo}
-        className="mt-6 text-[13px] text-text-muted dark:text-dark-text-muted underline underline-offset-2 tracking-[-0.13px] hover:text-text-primary dark:hover:text-dark-text transition-colors"
+        className="text-[13px] text-text-muted dark:text-dark-text-muted underline underline-offset-2 tracking-[-0.13px] hover:text-text-primary dark:hover:text-dark-text transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black/30 dark:focus-visible:ring-white/30 rounded"
       >
         Or try a demo deck first
       </button>

@@ -36,16 +36,16 @@ export function FlashcardViewer({
   onReset,
 }: FlashcardViewerProps) {
   return (
-    <div className="flex-1 flex flex-col items-center px-4 py-10 max-w-2xl mx-auto w-full">
+    <div className="flex-1 flex flex-col items-center px-4 py-5 sm:py-10 max-w-2xl mx-auto w-full">
       {/* Deck name */}
       {deckName && (
-        <div className="text-[13px] font-medium tracking-[0.14px] text-text-secondary dark:text-dark-text-secondary mb-6">
+        <div className="text-[20px] font-medium tracking-[-0.2px] text-text-primary dark:text-dark-text mb-5 sm:mb-8">
           {deckName}
         </div>
       )}
 
       {/* Progress */}
-      <div className="w-full max-w-lg mb-10">
+      <div className="w-full max-w-lg mb-5 sm:mb-10">
         <ProgressBar
           total={cards.length}
           known={knownCount}
@@ -54,7 +54,7 @@ export function FlashcardViewer({
       </div>
 
       {/* Card counter */}
-      <div className="text-[13px] font-medium tracking-[0.14px] text-text-muted dark:text-dark-text-muted mb-5">
+      <div className="text-[13px] font-medium tracking-[0.14px] text-text-muted dark:text-dark-text-muted mb-3 sm:mb-5">
         {currentIndex + 1} of {cards.length}
       </div>
 
@@ -62,7 +62,7 @@ export function FlashcardViewer({
       <FlashcardCard card={currentCard} isFlipped={isFlipped} onFlip={onFlip} />
 
       {/* Know / Don't know buttons */}
-      <div className="flex gap-3 mt-10 w-full max-w-lg">
+      <div className="flex gap-3 mt-5 sm:mt-10 w-full max-w-lg">
         <button
           onClick={onMarkReview}
           className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[-0.14px] border border-[rgba(0,0,0,0.15)] text-black dark:border-[rgba(255,255,255,0.2)] dark:text-white bg-transparent hover:bg-[rgba(0,0,0,0.04)] dark:hover:bg-[rgba(255,255,255,0.06)] transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black dark:focus-visible:ring-white"
@@ -78,7 +78,7 @@ export function FlashcardViewer({
       </div>
 
       {/* Navigation */}
-      <div className="flex items-center gap-5 mt-8">
+      <div className="flex items-center gap-5 mt-5 sm:mt-8">
         <button
           onClick={onPrev}
           disabled={currentIndex === 0}
@@ -127,7 +127,7 @@ export function FlashcardViewer({
       </div>
 
       {/* Keyboard hint */}
-      <div className="text-[11px] text-text-muted/40 dark:text-dark-text-muted/40 mt-5 tracking-[0.14px] hidden sm:block">
+      <div className="text-[11px] text-text-muted dark:text-dark-text-muted mt-5 tracking-[0.14px] hidden sm:block">
         Arrow keys to navigate · Space to flip
       </div>
     </div>

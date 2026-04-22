@@ -56,8 +56,6 @@ function App() {
         onToggleTheme={toggleTheme}
         showNewDeck={view !== "input"}
         onNewDeck={startNewDeck}
-        onLoadDeck={loadNewDeck}
-        currentDeckName={deckName}
       />
 
       {view === "input" && <FlashcardInput onGenerate={loadNewDeck} />}
