@@ -3,48 +3,49 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* ElevenLabs-inspired palette */
+  /* Figma-inspired strict monochrome palette */
   --color-surface: #ffffff;
-  --color-surface-alt: #f5f5f5;
-  --color-warm-stone: rgba(245, 242, 239, 0.8);
-  --color-warm-stone-solid: #f5f2ef;
+  --color-surface-alt: #ffffff;
+  --color-warm-stone: rgba(0, 0, 0, 0.04);
+  --color-warm-stone-solid: rgba(0, 0, 0, 0.04);
   --color-text-primary: #000000;
-  --color-text-secondary: #4e4e4e;
-  --color-text-muted: #777169;
-  --color-border: #e5e5e5;
-  --color-border-subtle: rgba(0, 0, 0, 0.05);
+  --color-text-secondary: rgba(0, 0, 0, 0.65);
+  --color-text-muted: rgba(0, 0, 0, 0.45);
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-border-subtle: rgba(0, 0, 0, 0.06);
 
-  /* Functional colors */
-  --color-known: #2d8a56;
-  --color-known-bg: rgba(45, 138, 86, 0.08);
-  --color-review: #b8860b;
-  --color-review-bg: rgba(184, 134, 11, 0.06);
+  /* Functional state backgrounds — kept monochrome, differentiated by fill vs outline */
+  --color-known: #000000;
+  --color-known-bg: rgba(0, 0, 0, 0.04);
+  --color-review: #000000;
+  --color-review-bg: rgba(0, 0, 0, 0.02);
 
-  /* Dark mode surfaces */
-  --color-dark-surface: #111111;
-  --color-dark-surface-alt: #1a1a1a;
-  --color-dark-card: #1c1c1c;
-  --color-dark-border: rgba(255, 255, 255, 0.08);
-  --color-dark-text: #e5e5e5;
-  --color-dark-text-secondary: #999999;
-  --color-dark-text-muted: #666666;
+  /* Dark mode — inverted pure */
+  --color-dark-surface: #000000;
+  --color-dark-surface-alt: #000000;
+  --color-dark-card: rgba(255, 255, 255, 0.04);
+  --color-dark-border: rgba(255, 255, 255, 0.1);
+  --color-dark-text: #ffffff;
+  --color-dark-text-secondary: rgba(255, 255, 255, 0.65);
+  --color-dark-text-muted: rgba(255, 255, 255, 0.45);
 
-  /* Shadows */
-  --shadow-card: rgba(0, 0, 0, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 1px 2px, rgba(0, 0, 0, 0.04) 0px 2px 4px;
-  --shadow-card-dark: rgba(255, 255, 255, 0.06) 0px 0px 0px 1px, rgba(0, 0, 0, 0.2) 0px 2px 4px;
-  --shadow-warm: rgba(78, 50, 23, 0.04) 0px 6px 16px;
-  --shadow-button: rgba(0, 0, 0, 0.4) 0px 0px 1px, rgba(0, 0, 0, 0.04) 0px 4px 4px;
-  --shadow-inset: rgba(0, 0, 0, 0.075) 0px 0px 0px 0.5px inset;
+  /* Shadows — Figma uses sparingly */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 20px rgba(0, 0, 0, 0.05);
+  --shadow-card-dark: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --shadow-warm: 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-button: 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --shadow-inset: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
 
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
-  letter-spacing: 0.16px;
+  letter-spacing: -0.14px;
+  font-feature-settings: "kern" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

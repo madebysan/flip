@@ -61,19 +61,19 @@ export function FlashcardViewer({
       {/* Card */}
       <FlashcardCard card={currentCard} isFlipped={isFlipped} onFlip={onFlip} />
 
-      {/* Know / Review buttons */}
+      {/* Know / Don't know buttons */}
       <div className="flex gap-3 mt-10 w-full max-w-lg">
         <button
           onClick={onMarkReview}
-          className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[0.14px] bg-[rgba(184,134,11,0.10)] border border-[rgba(184,134,11,0.15)] text-review dark:text-yellow-500 dark:bg-[rgba(184,134,11,0.08)] dark:border-[rgba(184,134,11,0.12)] transition-all hover:opacity-80 focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-alt dark:focus-visible:ring-offset-dark-surface"
+          className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[-0.14px] border border-[rgba(0,0,0,0.15)] text-black dark:border-[rgba(255,255,255,0.2)] dark:text-white bg-transparent hover:bg-[rgba(0,0,0,0.04)] dark:hover:bg-[rgba(255,255,255,0.06)] transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black dark:focus-visible:ring-white"
         >
-          Review Again
+          I don't know
         </button>
         <button
           onClick={onMarkKnown}
-          className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[0.14px] bg-[rgba(45,138,86,0.12)] border border-[rgba(45,138,86,0.15)] text-known dark:text-emerald-400 dark:bg-[rgba(45,138,86,0.08)] dark:border-[rgba(45,138,86,0.12)] transition-all hover:opacity-80 focus-visible:ring-2 focus-visible:ring-text-muted/20 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-alt dark:focus-visible:ring-offset-dark-surface"
+          className="flex-1 py-3 px-4 rounded-full text-[14px] font-medium tracking-[-0.14px] bg-black text-white dark:bg-white dark:text-black transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black dark:focus-visible:ring-white"
         >
-          Know It
+          I know it
         </button>
       </div>
 
