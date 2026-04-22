@@ -1,19 +1,29 @@
 import { useState } from "react";
 import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
 import { FlashcardInput } from "./components/FlashcardInput";
 import { FlashcardViewer } from "./components/FlashcardViewer";
 import { SummaryScreen } from "./components/SummaryScreen";
 import { ApiKeyPrompt } from "./components/ApiKeyPrompt";
+import { InstructionsDialog } from "./components/InstructionsDialog";
 import { useFlashcards } from "./hooks/useFlashcards";
 import { useTheme } from "./hooks/useTheme";
 import { useKeyboard } from "./hooks/useKeyboard";
 import { useApiKey } from "./hooks/useApiKey";
 
+const INSTRUCTIONS_KEY = "flip-has-seen-instructions";
+
 function App() {
   const { theme, toggleTheme } = useTheme();
   const { apiKey, setApiKey, removeApiKey } = useApiKey();
   const [showKeyPrompt, setShowKeyPrompt] = useState(false);
+  const [showInstructions, setShowInstructions] = useState(
+    () => typeof window !== "undefined" && localStorage.getItem(INSTRUCTIONS_KEY) !== "true"
+  );
+
+  const dismissInstructions = () => {
+    localStorage.setItem(INSTRUCTIONS_KEY, "true");
+    setShowInstructions(false);
+  };
   const {
     cards,
     currentIndex,
@@ -50,6 +60,8 @@ function App() {
         showNewDeck={view !== "input"}
         onNewDeck={startNewDeck}
         onOpenKeySettings={() => setShowKeyPrompt(true)}
+        onLoadDeck={loadNewDeck}
+        currentDeckName={deckName}
       />
 
       {view === "input" && (
@@ -102,7 +114,7 @@ function App() {
         />
       )}
 
-      <Footer onLoadDeck={loadNewDeck} />
+      {showInstructions && <InstructionsDialog onClose={dismissInstructions} />}
     </div>
   );
 }

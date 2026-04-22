@@ -5,7 +5,7 @@
 @theme {
   /* Figma-inspired strict monochrome palette */
   --color-surface: #ffffff;
-  --color-surface-alt: #ffffff;
+  --color-surface-alt: #f5f5f5;
   --color-warm-stone: rgba(0, 0, 0, 0.04);
   --color-warm-stone-solid: rgba(0, 0, 0, 0.04);
   --color-text-primary: #000000;
@@ -21,9 +21,9 @@
   --color-review-bg: rgba(0, 0, 0, 0.02);
 
   /* Dark mode — inverted pure */
-  --color-dark-surface: #000000;
-  --color-dark-surface-alt: #000000;
-  --color-dark-card: rgba(255, 255, 255, 0.04);
+  --color-dark-surface: #0a0a0a;
+  --color-dark-surface-alt: #0a0a0a;
+  --color-dark-card: #141414;
   --color-dark-border: rgba(255, 255, 255, 0.1);
   --color-dark-text: #ffffff;
   --color-dark-text-secondary: rgba(255, 255, 255, 0.65);
