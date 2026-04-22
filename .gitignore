@@ -23,3 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Local tracking files (per CLAUDE.md convention)
+plan.md
+backlog.md
+
+# Environment
+.env
+.env.local
