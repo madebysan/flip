@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 import { FlashcardInput } from "./components/FlashcardInput";
 import { FlashcardViewer } from "./components/FlashcardViewer";
 import { SummaryScreen } from "./components/SummaryScreen";
@@ -100,6 +101,8 @@ function App() {
           onClear={removeApiKey}
         />
       )}
+
+      <Footer onLoadDeck={loadNewDeck} />
     </div>
   );
 }
