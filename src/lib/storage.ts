@@ -1,11 +1,11 @@
 import type { Flashcard } from "./types";
 
 const KEYS = {
-  cards: "flashforge-cards",
-  deckName: "flashforge-deck-name",
-  currentIndex: "flashforge-current-index",
-  theme: "flashforge-theme",
-  hasVisited: "flashforge-has-visited",
+  cards: "flip-cards",
+  deckName: "flip-deck-name",
+  currentIndex: "flip-current-index",
+  theme: "flip-theme",
+  hasVisited: "flip-has-visited",
 };
 
 export function saveCards(cards: Flashcard[]): void {

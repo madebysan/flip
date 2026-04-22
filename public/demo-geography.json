@@ -1,0 +1,65 @@
+{
+  "name": "World Geography",
+  "cards": [
+    {
+      "question": "What's the longest river in the world?",
+      "answer": "The Nile, flowing roughly 4,130 miles (6,650 km) through northeastern Africa. The Amazon is a close second and sometimes disputes the title."
+    },
+    {
+      "question": "What's the largest desert in the world?",
+      "answer": "Antarctica — technically a polar desert due to its extremely low precipitation. If excluding polar deserts, the Sahara in North Africa is the largest hot desert."
+    },
+    {
+      "question": "What's the highest mountain in the world?",
+      "answer": "Mount Everest, at 29,032 feet (8,849 m). Located on the border between Nepal and Tibet (China)."
+    },
+    {
+      "question": "Which body of water is the saltiest?",
+      "answer": "The Dead Sea, between Israel, Jordan, and the West Bank. So salty that humans float effortlessly and almost no life can survive in it."
+    },
+    {
+      "question": "What's the smallest country in the world?",
+      "answer": "Vatican City, at 0.19 square miles (0.49 sq km). Home to the Pope and roughly 800 residents."
+    },
+    {
+      "question": "Which country has the largest population?",
+      "answer": "India surpassed China in 2023. Both have roughly 1.4 billion people."
+    },
+    {
+      "question": "What's the deepest point in the ocean?",
+      "answer": "The Challenger Deep, in the Mariana Trench in the western Pacific. Reaches nearly 36,000 feet (11,000 m) below sea level."
+    },
+    {
+      "question": "What country forms the land bridge between North and South America?",
+      "answer": "Panama. Its isthmus connects the two continents, and the Panama Canal cuts through it to link the Atlantic and Pacific oceans."
+    },
+    {
+      "question": "What's the largest country by land area?",
+      "answer": "Russia, covering roughly 6.6 million square miles (17.1 million sq km) — nearly twice the size of Canada or the United States."
+    },
+    {
+      "question": "What continent is Egypt on?",
+      "answer": "Africa — though Egypt's Sinai Peninsula technically extends into Asia, making it a transcontinental country."
+    },
+    {
+      "question": "What's the capital of Australia?",
+      "answer": "Canberra — not Sydney or Melbourne, despite those being larger cities. Canberra was purpose-built as a capital in 1908 to end disputes between the two."
+    },
+    {
+      "question": "What are the five Great Lakes of North America?",
+      "answer": "Superior, Michigan, Huron, Erie, and Ontario. The acronym HOMES helps remember them."
+    },
+    {
+      "question": "What's unusual about the Sargasso Sea?",
+      "answer": "It's the only sea in the world without a coastline. Bounded entirely by ocean currents in the North Atlantic rather than land. Known for its floating seaweed."
+    },
+    {
+      "question": "What's the Darién Gap?",
+      "answer": "A roadless, mountainous jungle region on the Panama-Colombia border. It's the only break in the Pan-American Highway, which otherwise runs from Alaska to Argentina."
+    },
+    {
+      "question": "What's the driest place on Earth?",
+      "answer": "The Atacama Desert in Chile. Some weather stations have never recorded rainfall. Ironically, it's coastal — but mountain ranges block all moisture."
+    }
+  ]
+}

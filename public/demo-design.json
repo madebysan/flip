@@ -1,0 +1,65 @@
+{
+  "name": "Design Fundamentals",
+  "cards": [
+    {
+      "question": "What's the difference between kerning and tracking in typography?",
+      "answer": "Kerning is the space between two specific letters; tracking is the uniform spacing applied across a whole word, line, or paragraph."
+    },
+    {
+      "question": "What is x-height in typography?",
+      "answer": "The height of the lowercase letter 'x' — a key measurement for how large a font appears on the page, independent of its actual point size."
+    },
+    {
+      "question": "What does 'leading' refer to in text layout?",
+      "answer": "The vertical space between lines of text, measured from one baseline to the next. Named after the thin strips of lead placed between lines in letterpress printing."
+    },
+    {
+      "question": "What's the difference between legibility and readability?",
+      "answer": "Legibility is how easily individual letters can be distinguished. Readability is how easy it is to read an extended passage of text."
+    },
+    {
+      "question": "What are complementary colors?",
+      "answer": "Colors that sit opposite each other on the color wheel, like red and green or blue and orange. They create strong visual contrast when placed next to each other."
+    },
+    {
+      "question": "What is the rule of thirds in composition?",
+      "answer": "A guideline that divides an image into nine equal sections using two horizontal and two vertical lines. Placing subjects along these lines or their intersections tends to create more balanced compositions."
+    },
+    {
+      "question": "What is visual hierarchy?",
+      "answer": "The arrangement of elements so the viewer understands importance at a glance. Created through size, color, contrast, spacing, and position."
+    },
+    {
+      "question": "What is negative space (also called white space)?",
+      "answer": "The empty area around and between design elements. It focuses attention, creates rhythm, and prevents the design from feeling cluttered."
+    },
+    {
+      "question": "What does the Gestalt principle of 'proximity' mean?",
+      "answer": "Objects placed close together are perceived as related or part of the same group — even without borders or dividers. A core way designers create structure."
+    },
+    {
+      "question": "What does the Gestalt principle of 'similarity' mean?",
+      "answer": "Objects sharing visual characteristics — like color, shape, or size — are perceived as belonging together, regardless of their spatial location."
+    },
+    {
+      "question": "What is a serif typeface?",
+      "answer": "A typeface with small decorative strokes at the ends of letters, like Times New Roman or Garamond. 'Sans-serif' means 'without serifs' (like Helvetica or Inter)."
+    },
+    {
+      "question": "What's the purpose of a grid system in layout?",
+      "answer": "It provides a consistent structure for aligning elements, making a layout feel intentional and helping designers make decisions faster without reinventing spacing each time."
+    },
+    {
+      "question": "What does WCAG stand for and what does it govern?",
+      "answer": "Web Content Accessibility Guidelines — a set of standards for making digital content usable by people with disabilities. Covers color contrast, keyboard navigation, and screen reader compatibility."
+    },
+    {
+      "question": "What is the minimum color contrast ratio for body text (WCAG AA)?",
+      "answer": "4.5:1 against the background. For large text (18pt+ or 14pt bold), the minimum drops to 3:1."
+    },
+    {
+      "question": "What does 'responsive design' mean?",
+      "answer": "A design approach where layouts automatically adapt to different screen sizes and devices — rather than shipping separate designs for desktop, tablet, and mobile."
+    }
+  ]
+}

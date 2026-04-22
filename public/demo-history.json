@@ -1,0 +1,65 @@
+{
+  "name": "World History Essentials",
+  "cards": [
+    {
+      "question": "What civilization built the pyramids at Giza?",
+      "answer": "The ancient Egyptians, around 2500 BCE during the reign of Pharaoh Khufu. The Great Pyramid was the tallest human-made structure for nearly 3,800 years."
+    },
+    {
+      "question": "What event triggered the start of World War I?",
+      "answer": "The assassination of Archduke Franz Ferdinand of Austria-Hungary in Sarajevo on June 28, 1914. Within weeks, interconnected alliances pulled most of Europe into war."
+    },
+    {
+      "question": "What was the Silk Road?",
+      "answer": "A network of trade routes connecting China, Central Asia, the Middle East, and Europe. Active for roughly 1,500 years — carried silk, spices, religion, technology, and disease."
+    },
+    {
+      "question": "What was the Renaissance?",
+      "answer": "A cultural and intellectual revival that began in 14th-century Italy and spread across Europe. Marked by renewed interest in classical learning, humanism, and artistic innovation."
+    },
+    {
+      "question": "Who was Genghis Khan?",
+      "answer": "A Mongol leader (c. 1162–1227) who united the nomadic tribes of Northeast Asia and founded the Mongol Empire — the largest contiguous empire in history."
+    },
+    {
+      "question": "What was the Industrial Revolution?",
+      "answer": "A period of rapid technological and economic change starting in Britain in the late 1700s. Shifted production from manual labor to machines and created the modern factory system."
+    },
+    {
+      "question": "What was the Black Death?",
+      "answer": "A bubonic plague pandemic that killed an estimated 30–50% of Europe's population between 1347 and 1351. Reshaped labor economics, religion, and medicine for centuries."
+    },
+    {
+      "question": "What did the French Revolution achieve?",
+      "answer": "Overthrew the French monarchy (1789–1799), abolished feudalism, and spread ideals of liberty, equality, and fraternity across Europe. Also produced the guillotine and the Reign of Terror."
+    },
+    {
+      "question": "What was the Cold War?",
+      "answer": "A period of political and military tension between the United States and the Soviet Union from roughly 1947 to 1991. Fought through proxy wars, espionage, and an arms race rather than direct conflict."
+    },
+    {
+      "question": "Who was Nelson Mandela?",
+      "answer": "South African leader who spent 27 years in prison for opposing apartheid, then became the country's first democratically elected president in 1994. Won the Nobel Peace Prize in 1993."
+    },
+    {
+      "question": "What was the Magna Carta?",
+      "answer": "A 1215 English charter that limited the king's power and established that even the monarch was subject to the law. A foundational document for modern democratic and legal systems."
+    },
+    {
+      "question": "What were the Opium Wars?",
+      "answer": "Two wars (1839–1842 and 1856–1860) between China and Western powers (primarily Britain) over trade and the opium trade. China's defeat began a century of foreign domination."
+    },
+    {
+      "question": "What was the Berlin Wall?",
+      "answer": "A concrete barrier built in 1961 that divided East Berlin (Soviet-controlled) from West Berlin. Stood as a symbol of the Cold War until it fell in November 1989."
+    },
+    {
+      "question": "What was the Ottoman Empire?",
+      "answer": "A Turkish empire that lasted from 1299 to 1922. At its peak controlled much of Southeast Europe, the Middle East, and North Africa. Its capital was Istanbul (formerly Constantinople)."
+    },
+    {
+      "question": "What did the printing press change?",
+      "answer": "Invented by Johannes Gutenberg around 1440, it made books dramatically cheaper and faster to produce. Enabled the spread of literacy, the Reformation, and the scientific revolution."
+    }
+  ]
+}

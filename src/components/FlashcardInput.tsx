@@ -72,26 +72,29 @@ export function FlashcardInput({ onGenerate, apiKey, onRequestKey }: FlashcardIn
     [readFile]
   );
 
-  const loadDemo = useCallback(async () => {
-    setError("");
-    try {
-      const response = await fetch("/demo.json");
-      if (!response.ok) throw new Error("Failed");
-      const data = (await response.json()) as {
-        cards: Array<{ question: string; answer: string }>;
-        name: string;
-      };
-      const cards: Flashcard[] = data.cards.map((c) => ({
-        id: generateId(),
-        question: c.question,
-        answer: c.answer,
-        status: "unmarked" as const,
-      }));
-      onGenerate(cards, data.name || "Demo Deck");
-    } catch {
-      setError("Couldn't load the demo deck.");
-    }
-  }, [onGenerate]);
+  const loadDemo = useCallback(
+    async (filename: string) => {
+      setError("");
+      try {
+        const response = await fetch(`/${filename}`);
+        if (!response.ok) throw new Error("Failed");
+        const data = (await response.json()) as {
+          cards: Array<{ question: string; answer: string }>;
+          name: string;
+        };
+        const cards: Flashcard[] = data.cards.map((c) => ({
+          id: generateId(),
+          question: c.question,
+          answer: c.answer,
+          status: "unmarked" as const,
+        }));
+        onGenerate(cards, data.name || "Demo Deck");
+      } catch {
+        setError("Couldn't load that deck.");
+      }
+    },
+    [onGenerate]
+  );
 
   const handleGenerate = async () => {
     setError("");
@@ -280,16 +283,36 @@ AI will extract the key concepts and create proper question/answer flashcards.`}
 
       <div className="mt-10 text-[12px] text-text-muted/50 dark:text-dark-text-muted/50 max-w-sm text-center leading-[1.5] tracking-[0.14px]">
         Drop a .md or .txt file, or paste any text. AI reads your content and
-        creates study-ready Q&A cards.{" "}
+        creates study-ready Q&A cards.
+        <br />
+        <br />
+        Or try a deck:{" "}
         <button
           type="button"
-          onClick={loadDemo}
+          onClick={() => loadDemo("demo-design.json")}
           disabled={isLoading}
           className="underline underline-offset-2 hover:text-text-muted dark:hover:text-dark-text-muted transition-colors disabled:opacity-50"
         >
-          Try a demo
+          Design
+        </button>{" "}
+        ·{" "}
+        <button
+          type="button"
+          onClick={() => loadDemo("demo-history.json")}
+          disabled={isLoading}
+          className="underline underline-offset-2 hover:text-text-muted dark:hover:text-dark-text-muted transition-colors disabled:opacity-50"
+        >
+          History
+        </button>{" "}
+        ·{" "}
+        <button
+          type="button"
+          onClick={() => loadDemo("demo-geography.json")}
+          disabled={isLoading}
+          className="underline underline-offset-2 hover:text-text-muted dark:hover:text-dark-text-muted transition-colors disabled:opacity-50"
+        >
+          Geography
         </button>
-        .
       </div>
     </div>
   );
