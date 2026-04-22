@@ -8,11 +8,8 @@ import {
   loadCurrentIndex,
   saveDeckName,
   loadDeckName,
-  hasVisited,
-  markVisited,
   clearDeck,
 } from "../lib/storage";
-import { exampleCards, EXAMPLE_DECK_NAME } from "../lib/example-deck";
 
 export function useFlashcards() {
   const [cards, setCards] = useState<Flashcard[]>([]);
@@ -21,7 +18,7 @@ export function useFlashcards() {
   const [deckName, setDeckName] = useState("");
   const [view, setView] = useState<AppView>("input");
 
-  // Initialize from localStorage or example deck
+  // Initialize from localStorage — homepage is the new-deck screen
   useEffect(() => {
     const savedCards = loadCards();
     if (savedCards && savedCards.length > 0) {
@@ -29,13 +26,6 @@ export function useFlashcards() {
       setDeckName(loadDeckName() || "My Deck");
       setCurrentIndex(loadCurrentIndex());
       setView("study");
-    } else if (!hasVisited()) {
-      setCards(exampleCards);
-      setDeckName(EXAMPLE_DECK_NAME);
-      setView("study");
-      markVisited();
-      saveCards(exampleCards);
-      saveDeckName(EXAMPLE_DECK_NAME);
     }
   }, []);
 

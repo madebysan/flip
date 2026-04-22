@@ -21,6 +21,8 @@ Rules:
 
 Topic or content:`;
 
+const DEMO_FILE = "demo-geography.json";
+
 interface FlashcardInputProps {
   onGenerate: (cards: Flashcard[], name: string) => void;
 }
@@ -32,7 +34,6 @@ type ParseResult =
 function parseDeckJson(raw: string): ParseResult {
   let cleaned = raw.trim();
 
-  // Strip markdown code fences if present
   const fenceMatch = cleaned.match(/^```(?:json)?\s*\n?([\s\S]*?)\n?```\s*$/);
   if (fenceMatch) cleaned = fenceMatch[1].trim();
 
@@ -62,7 +63,10 @@ function parseDeckJson(raw: string): ParseResult {
 
   const cardsValid = obj.cards.every(
     (c) =>
-      c && typeof c === "object" && typeof (c as { question?: unknown }).question === "string" && typeof (c as { answer?: unknown }).answer === "string"
+      c &&
+      typeof c === "object" &&
+      typeof (c as { question?: unknown }).question === "string" &&
+      typeof (c as { answer?: unknown }).answer === "string"
   );
   if (!cardsValid) {
     return {
@@ -89,7 +93,7 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Clipboard API failed — fall back to selecting the prompt text
+      // Clipboard API can fail in insecure contexts; silent noop
     }
   };
 
@@ -116,9 +120,29 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
     onGenerate(cards, result.name);
   };
 
+  const loadDemo = async () => {
+    try {
+      const response = await fetch(`/${DEMO_FILE}`);
+      if (!response.ok) return;
+      const data = (await response.json()) as {
+        cards: Array<{ question: string; answer: string }>;
+        name: string;
+      };
+      const cards: Flashcard[] = data.cards.map((c) => ({
+        id: generateId(),
+        question: c.question,
+        answer: c.answer,
+        status: "unmarked" as const,
+      }));
+      onGenerate(cards, data.name || "Demo Deck");
+    } catch {
+      // Silently fail — demo not critical
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col items-center px-4 py-12 max-w-2xl mx-auto w-full">
-      <div className="text-center mb-10">
+      <div className="text-center mb-12">
         <h1 className="text-[36px] font-light leading-[1.17] tracking-[-0.4px] text-text-primary dark:text-dark-text mb-3">
           Turn your notes into flashcards
         </h1>
@@ -128,49 +152,61 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
       </div>
 
       {/* Step 1 — Copy the prompt */}
-      <section className="w-full mb-8">
-        <div className="flex items-baseline gap-3 mb-3">
+      <section className="w-full mb-10">
+        <div className="flex items-baseline gap-3 mb-2">
           <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
             Step 1
           </span>
           <span className="text-[14px] font-medium tracking-[-0.14px] text-text-primary dark:text-dark-text">
-            Copy this prompt
+            Copy the prompt
           </span>
         </div>
-        <div className="relative">
-          <pre
-            className="w-full p-5 pr-24 rounded-2xl border border-border dark:border-dark-border bg-surface dark:bg-dark-card text-text-secondary dark:text-dark-text-secondary text-[13px] leading-[1.6] tracking-[-0.14px] whitespace-pre-wrap font-sans max-h-64 overflow-y-auto"
-            style={{ boxShadow: "var(--shadow-inset)" }}
-          >
-            {PROMPT}
-          </pre>
-          <button
-            onClick={copyPrompt}
-            className="absolute top-3 right-3 px-3 py-1.5 rounded-full bg-black text-white dark:bg-white dark:text-black text-[12px] font-medium tracking-[-0.12px] transition-opacity hover:opacity-90"
-          >
-            {copied ? "Copied" : "Copy"}
-          </button>
-        </div>
+        <p className="text-[14px] leading-[1.55] tracking-[-0.14px] text-text-secondary dark:text-dark-text-secondary mb-4">
+          A pre-formatted instruction that tells the AI to return flashcards as JSON.
+        </p>
+        <button
+          onClick={copyPrompt}
+          className="px-6 py-2.5 rounded-full bg-black text-white dark:bg-white dark:text-black text-[14px] font-medium tracking-[-0.14px] transition-opacity hover:opacity-90 flex items-center gap-2"
+        >
+          {copied ? (
+            <>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+              Copied
+            </>
+          ) : (
+            <>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              Copy prompt
+            </>
+          )}
+        </button>
       </section>
 
       {/* Step 2 — Paste into LLM */}
-      <section className="w-full mb-8">
-        <div className="flex items-baseline gap-3 mb-3">
+      <section className="w-full mb-10">
+        <div className="flex items-baseline gap-3 mb-2">
           <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
             Step 2
           </span>
           <span className="text-[14px] font-medium tracking-[-0.14px] text-text-primary dark:text-dark-text">
-            Paste into ChatGPT, Gemini, or Claude
+            Paste it into ChatGPT, Gemini, or Claude
           </span>
         </div>
         <p className="text-[14px] leading-[1.55] tracking-[-0.14px] text-text-secondary dark:text-dark-text-secondary">
-          Tell the LLM your topic (e.g. <em className="not-italic font-medium text-text-primary dark:text-dark-text">History of the UK</em>), or attach a file — a PDF, article, or lecture notes you want to study.
+          Open your preferred AI and paste the prompt. Then give it a topic (e.g.{" "}
+          <em className="not-italic font-medium text-text-primary dark:text-dark-text">History of the UK</em>
+          ) or attach a file — a PDF, article, or lecture notes. When the AI responds, <strong className="font-medium text-text-primary dark:text-dark-text">copy the full JSON response</strong> so you can paste it below.
         </p>
       </section>
 
       {/* Step 3 — Paste JSON response */}
       <section className="w-full mb-6">
-        <div className="flex items-baseline gap-3 mb-3">
+        <div className="flex items-baseline gap-3 mb-2">
           <span className="text-[12px] font-medium tracking-[0.6px] uppercase text-text-muted dark:text-dark-text-muted">
             Step 3
           </span>
@@ -178,6 +214,9 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
             Paste the JSON response here
           </span>
         </div>
+        <p className="text-[14px] leading-[1.55] tracking-[-0.14px] text-text-secondary dark:text-dark-text-secondary mb-4">
+          Flip reads the JSON and builds your deck.
+        </p>
         <textarea
           value={jsonInput}
           onChange={(e) => setJsonInput(e.target.value)}
@@ -198,6 +237,13 @@ export function FlashcardInput({ onGenerate }: FlashcardInputProps) {
         className="px-8 py-3 rounded-full bg-black dark:bg-white text-white dark:text-black text-[15px] font-medium tracking-[-0.15px] transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         Load deck
+      </button>
+
+      <button
+        onClick={loadDemo}
+        className="mt-6 text-[13px] text-text-muted dark:text-dark-text-muted underline underline-offset-2 tracking-[-0.13px] hover:text-text-primary dark:hover:text-dark-text transition-colors"
+      >
+        Or try a demo deck first
       </button>
     </div>
   );
