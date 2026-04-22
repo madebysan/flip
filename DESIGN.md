@@ -85,7 +85,7 @@ Three-step guided flow on a single screen: (1) copy prompt from a code-styled pr
 
 | Component | Purpose | Path |
 |---|---|---|
-| `Header` | Logo + deck tabs + theme/new-deck buttons | `src/components/Header.tsx` |
+| `Header` | Logo + new-deck button + theme toggle | `src/components/Header.tsx` |
 | `FlashcardCard` | 3D flip animation, front/back faces | `src/components/FlashcardCard.tsx` |
 | `FlashcardViewer` | Progress, card, know/don't-know, nav | `src/components/FlashcardViewer.tsx` |
 | `FlashcardInput` | 3-step deck-builder: copy prompt, paste JSON | `src/components/FlashcardInput.tsx` |
@@ -102,6 +102,9 @@ Three-step guided flow on a single screen: (1) copy prompt from a code-styled pr
 - **Deck name lives in content, not the header** (2026-04-22) — previously shown as "Flip / Deck Name" in header. Moved to a small muted label above the progress bar so the header carries only the app identity.
 - **Grey page background, white cards** (2026-04-22) — pure white on white made the card bleed into the page. `#f5f5f5` page + `#ffffff` card gives just enough layering.
 - **Removed BYOK flow, replaced with copy-paste prompt** (2026-04-22) — app no longer asks for an Anthropic API key. User copies a pre-formatted prompt, pastes into any LLM, gets JSON back, pastes into Flip. Zero backend, zero keys, works with ChatGPT / Gemini / Claude / anything that returns JSON. Matches the MIT / non-commercial ethos.
+- **Header tabs removed** (2026-04-22) — the Design / History / Geography demo tabs lived in the header for a while but became redundant once demos were surfaced on the new-deck screen itself. Header is now just logo + new-deck button + theme toggle. Less chrome, clearer single-purpose navigation.
+- **Deck title promoted to content area** (2026-04-22) — originally shown as small text (13px muted) above the progress bar; got lost visually. Bumped to 20px medium text-primary. Now reads as a proper section heading for the study view.
+- **New-deck screen uses Figma mono step labels** (2026-04-22) — "STEP 1", "STEP 2", "STEP 3" in 12px uppercase with +0.6px letter-spacing. Matches Figma's `figmaMono` signage pattern. Step titles are 15px semibold text-primary; descriptions 14px regular text-secondary. Three-level rhythm prevents title/description collision.
 
 ## Anti-patterns (don't repeat)
 
