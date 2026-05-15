@@ -1,21 +1,22 @@
-<p align="center">
-  <img src="assets/app-icon.png" width="128" height="128" alt="Flip app icon">
-</p>
+<p><img src="assets/app-icon.png" width="128" height="128" alt="Flip app icon"></p>
 
-<h1 align="center">Flip</h1>
+<h1>Flip</h1>
 
-<p align="center">Turn notes into flashcards to study.<br>
+<p>Turn notes into flashcards to study.<br>
 No AI API key required.</p>
 
-<p align="center">Web · MIT</p>
+<p>Web · MIT</p>
 
-<p align="center"><a href="https://flip.santiagoalonso.com"><strong>Try it live →</strong></a></p>
-
-<p align="center">
-  <img src="assets/screenshot.png" width="900" alt="Flip app screenshot — dark mode hero view with a floating question card and answer card">
+<p>
+  <img src="https://img.shields.io/badge/React-61dafb" alt="React">
+  <img src="https://img.shields.io/badge/TypeScript-3178c6" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Tailwind-38bdf8" alt="Tailwind">
+  <img src="https://img.shields.io/badge/Vite-646cff" alt="Vite">
 </p>
 
----
+<p><a href="https://flip.santiagoalonso.com">Try it live</a></p>
+
+![Flip app screenshot — dark mode hero view with a floating question card and answer card](assets/screenshot.png)
 
 ## What it does
 
